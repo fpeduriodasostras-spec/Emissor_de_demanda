@@ -208,7 +208,7 @@ nav button.sel .ic{transform:translateY(-1px)}
       <!-- v12: versão SEMPRE visível — diagnóstico de app desatualizado no
            celular (caso Cassio 29/09: compartilhava sem o link do app porque
            o aparelho rodava uma cópia antiga; sem selo não dava p/ saber) -->
-      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v13</span></small><button type="button" id="hd-user" hidden title="Sair e voltar à tela inicial"></button><br>
+      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v14</span></small><button type="button" id="hd-user" hidden title="Sair e voltar à tela inicial"></button><br>
       <span class="prox-pill">Próxima: <b id="hd-prox">—</b></span>
     </div>
   </div>
@@ -221,7 +221,7 @@ nav button.sel .ic{transform:translateY(-1px)}
     <svg class="login-logo" viewBox="0 0 340 436" role="img" aria-label="Prefeitura de Rio das Ostras — Governando com Responsabilidade"><use href="#logo-pmro"/></svg>
     <div class="login-tit">
       <h2>Emissor de Ordem de Serviço</h2>
-      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v13</span></small>
+      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v14</span></small>
     </div>
     <div class="login-users" id="login-users"></div>
     <div class="login-senha" id="login-senha">
@@ -389,7 +389,7 @@ nav button.sel .ic{transform:translateY(-1px)}
    Arquivo único, zero dependências. Gera .xlsx no modelo oficial
    (timbre embutido) com numeração automática sequencial.
    ================================================================ */
-const VERSAO = 'v10';
+const VERSAO = 'v14';
 /* dispara o robô do n8n na hora da emissão (e-mail com anexo + WhatsApp
    do grupo) — o agendamento do n8n vira só rede de segurança */
 const WEBHOOK_NOTIFICA = 'https://webhook.editly.com.br/webhook/bc885b6e-381b-4b23-a7d2-00a9e695e891';
@@ -1036,8 +1036,40 @@ async function shareWhats(os){
   }else{
     // alguns WhatsApp Android DESCARTAM o texto quando vai arquivo junto — o
     // resumo com o link fica copiado p/ colar na conversa se isso acontecer
-    try{ await navigator.clipboard.writeText(resumoOS(os,'app')); toast('Texto com o link do app COPIADO — se não foi junto do arquivo, é só colar na conversa'); }catch(e){}
+    const texto=resumoOS(os,'app');
+    let copiou=false;
+    try{ await navigator.clipboard.writeText(texto); copiou=true; }catch(e){}
+    if(ehIOS() || !copiou) passoDoLink(os, texto);
+    else toast('Texto com o link do app COPIADO — se não foi junto do arquivo, é só colar na conversa');
   }
+}
+/* v14: CASO CÁSSIO RESOLVIDO (09/10) — ele já estava na v13; o que faltava é
+   que o aparelho dele é iPhone. O WhatsApp do iPhone recebe arquivo+texto e
+   DESCARTA o texto (some o link do app de campo), e a cópia de reserva acima
+   falha calada no Safari (o toque já foi "gasto" pela folha de compartilhar).
+   No iPhone — ou em qualquer aparelho onde a cópia falhe — aparece um 2º
+   passo: botão que manda SÓ o texto com o link (toque novo = permissão nova).
+   Aparece também se ele desistiu da folha; aí é só Fechar. */
+function ehIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1); }
+function passoDoLink(os, texto){
+  const velho=document.getElementById('passo-link'); if(velho) velho.remove();
+  const p=document.createElement('div'); p.id='passo-link';
+  p.style.cssText='position:fixed;inset:0;z-index:400;background:rgba(10,25,45,.55);display:flex;align-items:flex-end;justify-content:center;padding:16px';
+  p.innerHTML='<div style="background:#fff;border-radius:14px;max-width:440px;width:100%;padding:18px 16px 14px;box-shadow:0 6px 24px rgba(0,0,0,.3)">'
+    +'<div style="font-weight:800;font-size:16px;color:var(--tinta);margin-bottom:6px">📲 Falta o link para a equipe — O.S. '+escHtml(os.numero)+'</div>'
+    +'<div style="font-size:14px;color:var(--tinta);margin-bottom:14px">O WhatsApp deste celular não leva o texto junto com o arquivo. Toque abaixo e escolha <b>o mesmo grupo</b>: a equipe recebe o <b>link do app</b> para só clicar.</div>'
+    +'<button type="button" class="bt bt-verde" id="passo-link-ir" style="width:100%;margin-bottom:8px">🟢 Mandar o link no WhatsApp</button>'
+    +'<button type="button" class="bt bt-mini" id="passo-link-fechar" style="width:100%">Fechar</button></div>';
+  document.body.appendChild(p);
+  const fecha=()=>p.remove();
+  p.querySelector('#passo-link-fechar').onclick=fecha;
+  p.querySelector('#passo-link-ir').onclick=async()=>{
+    if(navigator.share){
+      try{ await navigator.share({text:texto}); fecha(); return; }
+      catch(e){ if(e && e.name==='AbortError') return; } // desistiu: painel fica p/ tentar de novo
+    }
+    location.href='https://wa.me/?text='+encodeURIComponent(texto); // sem folha nativa: abre o WhatsApp com o texto
+  };
 }
 async function shareEmail(os){
   const u8=xlsxOS(os);
@@ -1482,7 +1514,7 @@ $('#login-esqueci').onclick=()=>{
      oficial;
    - aba velha no navegador: compara com versao.txt do servidor ao abrir e
      toda vez que a aba volta ao primeiro plano; diferente → botão Atualizar. */
-const APP_VER='13';
+const APP_VER='14';
 const URL_OFICIAL='https://fpvieira-fiscalizacao-educacao-ro-seven.vercel.app';
 function bannerVersao(html){
   let b=document.getElementById('aviso-versao');
