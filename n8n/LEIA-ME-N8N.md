@@ -33,7 +33,7 @@ essa O.S. — tira o número do `update` acima.)
      ⚠ NÃO confundir com a anon — as duas começam com `eyJ` (erro real de 10/09).
    - `COLE_AQUI_EVOLUTION_APIKEY` (nó WhatsApp) → a apikey da instância Renanfp.
    O resto JÁ ESTÁ PREENCHIDO no arquivo (24/09): URL do envio
-   `https://evo.editly.com.br/message/sendMedia/Renanfp` e os 3 JIDs verificados
+   `https://evo.arkaisolutions.app.br/message/sendMedia/Renanfp` e os 3 JIDs verificados
    em 11/09 (grupo do Renato, do Wellington e o padrão "RDO - Manutenção
    Preventiva/Emergencial") — não colar nada por cima deles.
 3. No nó **"E-mail oficial COM ANEXO"**: selecionar a credencial Gmail já

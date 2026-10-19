@@ -139,7 +139,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://evo.editly.com.br/message/sendMedia/Renanfp",
+        "url": "https://evo.arkaisolutions.app.br/message/sendMedia/Renanfp",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [

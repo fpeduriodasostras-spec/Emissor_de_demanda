@@ -392,7 +392,7 @@ nav button.sel .ic{transform:translateY(-1px)}
 const VERSAO = 'v14';
 /* dispara o robô do n8n na hora da emissão (e-mail com anexo + WhatsApp
    do grupo) — o agendamento do n8n vira só rede de segurança */
-const WEBHOOK_NOTIFICA = 'https://webhook.editly.com.br/webhook/bc885b6e-381b-4b23-a7d2-00a9e695e891';
+const WEBHOOK_NOTIFICA = 'https://webhook.arkaisolutions.app.br/webhook/bc885b6e-381b-4b23-a7d2-00a9e695e891';
 function avisaRobo(){ try{ fetch(WEBHOOK_NOTIFICA, {mode:'no-cors', cache:'no-store'}); }catch(e){} }
 const LS = 'fpv_fisc_semde_v1';
 /* NUVEM (Supabase) — vazio = modo LOCAL; preenchido = central (ver supabase/DEPLOY.md) */
