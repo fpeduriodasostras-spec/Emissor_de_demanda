@@ -208,7 +208,7 @@ nav button.sel .ic{transform:translateY(-1px)}
       <!-- v12: versão SEMPRE visível — diagnóstico de app desatualizado no
            celular (caso Cassio 29/09: compartilhava sem o link do app porque
            o aparelho rodava uma cópia antiga; sem selo não dava p/ saber) -->
-      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v14</span></small><button type="button" id="hd-user" hidden title="Sair e voltar à tela inicial"></button><br>
+      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v16</span></small><button type="button" id="hd-user" hidden title="Sair e voltar à tela inicial"></button><br>
       <span class="prox-pill">Próxima: <b id="hd-prox">—</b></span>
     </div>
   </div>
@@ -221,7 +221,7 @@ nav button.sel .ic{transform:translateY(-1px)}
     <svg class="login-logo" viewBox="0 0 340 436" role="img" aria-label="Prefeitura de Rio das Ostras — Governando com Responsabilidade"><use href="#logo-pmro"/></svg>
     <div class="login-tit">
       <h2>Emissor de Ordem de Serviço</h2>
-      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v14</span></small>
+      <small>Fiscalização · Manutenção Predial · <span style="opacity:.55">v16</span></small>
     </div>
     <div class="login-users" id="login-users"></div>
     <div class="login-senha" id="login-senha">
@@ -389,7 +389,7 @@ nav button.sel .ic{transform:translateY(-1px)}
    Arquivo único, zero dependências. Gera .xlsx no modelo oficial
    (timbre embutido) com numeração automática sequencial.
    ================================================================ */
-const VERSAO = 'v14';
+const VERSAO = 'v16';
 /* dispara o robô do n8n na hora da emissão (e-mail com anexo + WhatsApp
    do grupo) — o agendamento do n8n vira só rede de segurança */
 const WEBHOOK_NOTIFICA = 'https://webhook.arkaisolutions.app.br/webhook/bc885b6e-381b-4b23-a7d2-00a9e695e891';
@@ -397,8 +397,8 @@ function avisaRobo(){ try{ fetch(WEBHOOK_NOTIFICA, {mode:'no-cors', cache:'no-st
 const LS = 'fpv_fisc_semde_v1';
 /* NUVEM (Supabase) — vazio = modo LOCAL; preenchido = central (ver supabase/DEPLOY.md) */
 const NUVEM = {
-  url: 'https://irprgdzaqoqnjuksuloh.supabase.co',
-  anon: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlycHJnZHphcW9xbmp1a3N1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgzMTA3MTAsImV4cCI6MjEwMzg4NjcxMH0.zpl2mFwrQ-1WgBpC-ULz5eTSlFcsqiqO8cIeCHSFAi8' // anon/public — RLS protege; service_role NUNCA entra aqui
+  url: 'https://supabase.arkaisolutions.app.br',
+  anon: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc5MjQxMzA0LCJleHAiOjE5MzY5MjEzMDR9.G8--vtDaDf48VYOesZJZTln05yfllgzM1nkdb3caYqM' // anon/public — RLS protege; service_role NUNCA entra aqui
 };
 const nuvemOK = () => !!(NUVEM.url && NUVEM.anon);
 const EMAIL_DOMINIO = '@fpvfisc.app';
@@ -423,7 +423,11 @@ const TEMPLATE_OS = {
 const TIMBRE_B64 = TEMPLATE_OS['xl/media/image1.jpeg'];
 
 
-const ESCOLAS = ["Escola M. Nilton Balthazar","Escola M. Nadir da Silva Salvador","Escola M. Marinete Coelho Souza","Escola M. Inayá Moraes D'Couto","Escola M. Simar Machado Sodré","Creche Dona Lina","Escola M. Senhorinha de Oliveira Gomes","Creche M. Márcia Lustosa Machado","Escola M. Fany Batista Esteves","Escola M. Mônica de Andrade Ribeiro","Escola M. América Abdalla","Escola M. Fazenda da Praia","NUGEPE","SEMEDE","Creche Dona Cota","Escola M. Jovenil Bastos da Silva","Escola M. Rio das Ostras","Escola M. João Bento Duarte Neto","Escola M. Pedro Moreira dos Santos","Escola M. Sebastião Loubach","Escola M. Dom Bosco","CEMAEE - Centro M. de Atendimento Edu. Especializado","Escola M. Padre José Dilson Dórea","Escola M. Neli Aparecida Tâmara Luiz","Escola M. Elson Pinheiro","Escola M. Francisco de Assis Medeiros Rangel","Escola M. Célio Sarzedas","IMERO","Escola M. Maria Teixeira de Paula","Escola M. Nelzir Pereira Mello","Escola M. Jerônymo Mendes da Costa","Escola M. Ary Gomes de Marins","Escola M. Rosângela Duarte Faria","Escola M. José de Oliveira Martins","Escola M. A. Carlos Maurício Franco","CIEP Mestre Marçal Municipalizado","Escola M. João Batista Gomes da Cruz","Escola M. Solange Viana","Creche M. Maria Rosa Ribeiro Pinheiro","Escola M. Ernestina Jorge Pereira","Escola M. Maria da Penha de Oliveira","Escola M. Alzir David Pereira","Escola M. Ondina Pinto Marcondes","Escola M. Henrique Sarzedas","Escola M. Enedina Fidélis Moreira","Escola M. José Luiz de Lemos","Escola M. Fazendas Reunidas Atlântica","Escola M. Alberto Jorge","Escola M. Cláudio Ribeiro","Escola M. Paulo Pinheiro","Creche M. Dona Senhorinha","Creche M. Valdira Flausino Rodrigues","Escola M. Rocha Leão","CEMADA","Escola M. Trindade","Praça do Skate","Estádio Emília Rosa Guimarães","Estádio Julieta Viana","Estádio Amaro Mota","Campo Society Gilberto Cabral","Campo Society Heiltor M. Pereira","Vila Olímpica","C.B.F Centro de Treinamento Gilson Zarour","Creche M. Maria Lina Paixão Fontes Coutinho","SUPRIMENTOS","Gabinete Prefeitura"];
+const ESCOLAS = ["Escola M. Nilton Balthazar","Escola M. Nadir da Silva Salvador","Escola M. Marinete Coelho Souza","Escola M. Inayá Moraes D'Couto","Escola M. Simar Machado Sodré","Creche Dona Lina","Escola M. Senhorinha de Oliveira Gomes","Creche M. Márcia Lustosa Machado","Escola M. Fany Batista Esteves","Escola M. Mônica de Andrade Ribeiro","Escola M. América Abdalla","Escola M. Fazenda da Praia","NUGEPE","SEMEDE","Creche Dona Cota","Escola M. Jovenil Bastos da Silva","Escola M. Rio das Ostras","Escola M. João Bento Duarte Neto","Escola M. Pedro Moreira dos Santos","Escola M. Sebastião Loubach","Escola M. Dom Bosco","CEMAEE - Centro M. de Atendimento Edu. Especializado","Escola M. Padre José Dilson Dórea","Escola M. Neli Aparecida Tâmara Luiz","Escola M. Elson Pinheiro","Escola M. Francisco de Assis Medeiros Rangel","Escola M. Célio Sarzedas","IMERO","Escola M. Maria Teixeira de Paula","Escola M. Nelzir Pereira Mello","Escola M. Jerônymo Mendes da Costa","Escola M. Ary Gomes de Marins","Escola M. Rosângela Duarte Faria","Escola M. José de Oliveira Martins","Escola M. A. Carlos Maurício Franco","CIEP Mestre Marçal Municipalizado","Escola M. João Batista Gomes da Cruz","Escola M. Solange Viana","Creche M. Maria Rosa Ribeiro Pinheiro","Escola M. Ernestina Jorge Pereira","Escola M. Maria da Penha de Oliveira","Escola M. Alzir David Pereira","Escola M. Ondina Pinto Marcondes","Escola M. Henrique Sarzedas","Escola M. Enedina Fidélis Moreira","Escola M. José Luiz de Lemos","Escola M. Fazendas Reunidas Atlântica","Escola M. Alberto Jorge","Escola M. Cláudio Ribeiro","Escola M. Paulo Pinheiro","Creche M. Dona Senhorinha","Creche M. Valdira Flausino Rodrigues","Escola M. Rocha Leão","CEMADA","Escola M. Trindade","Praça do Skate","Estádio Emília Rosa Guimarães","Estádio Julieta Viana","Estádio Amaro Mota","Campo Society Gilberto Cabral","Campo Society Heiltor M. Pereira","Vila Olímpica","C.B.F Centro de Treinamento Gilson Zarour","Creche M. Maria Lina Paixão Fontes Coutinho","SUPRIMENTOS","Gabinete Prefeitura","Escola M. Maria Gorete Vicente Jorge"];
+/* v16 (v15 do Claude da VPS): a lista oficial vem da tabela `unidade` do banco (cadastro unico, o mesmo
+   do copiloto); ESCOLAS fica so de reserva offline. */
+let UNIDADES = ESCOLAS.slice();
+let APELIDOS_UNI = {}; // chave do apelido -> nome oficial (do cadastro)
 const AREAS = ['ELÉTRICA','HIDRÁULICA','CARPINTARIA','CIVIL','PINTURA','SERRALHERIA','REFRIGERAÇÃO','OUTROS'];
 const NIVEIS = ['I','II','III'];
 const FISCAIS = ['Cássio','Renato','Wellington','Ane (SEMED)'];
@@ -520,6 +524,26 @@ async function nuvemRest(caminho, opts, jaRenovou){
   if(!r.ok){ const e=await r.json().catch(()=>({})); throw {status:r.status, corpo:e}; }
   if(r.status===204) return null;
   return r.json();
+}
+function chaveUni(s){ return norm(s).replace(/[^a-z0-9]+/g,' ').trim(); }
+function montaDatalistUni(){
+  const dl=$('#dl-escolas'); dl.innerHTML='';
+  UNIDADES.forEach(e=>{ const o=document.createElement('option'); o.value=e; dl.appendChild(o); });
+}
+function unidadeOficial(txt){
+  const k=chaveUni(txt); if(!k) return '';
+  return UNIDADES.find(u=>chaveUni(u)===k) || APELIDOS_UNI[k] || '';
+}
+async function carregarUnidades(){
+  if(!nuvemOK() || !usuarioLogado()) return;
+  try{
+    const rows=await nuvemRest('unidade?select=nome,apelidos&contrato=like.Educa*&ativo=is.true&order=nome.asc');
+    if(rows && rows.length){
+      UNIDADES=rows.map(r=>r.nome);
+      APELIDOS_UNI={}; rows.forEach(r=>(r.apelidos||[]).forEach(a=>{ APELIDOS_UNI[chaveUni(a)]=r.nome; }));
+      st.cfg.unidades=UNIDADES; st.cfg.apelidosUni=APELIDOS_UNI; salvarSt(); montaDatalistUni();
+    }
+  }catch(e){ /* sem rede/sem tabela: segue com a lista em cache ou a reserva */ }
 }
 function rowParaOs(r){
   return { id:'db-'+r.id, dbId:r.id, numero:r.numero,
@@ -637,7 +661,7 @@ function aplicarSessao(){
   const f=document.getElementById('f-fiscal');
   if(u && f && !f.value) f.value=u.nome;
   if(typeof renderAjustes==='function' && document.getElementById('sec-ajustes').classList.contains('ativa')) renderAjustes();
-  if(u) nuvemSync(true);
+  if(u){ nuvemSync(true); carregarUnidades(); }
 }
 
 /* ---------------- utilidades ---------------- */
@@ -1246,6 +1270,15 @@ async function emitir(){
   const assunto=$('#f-assunto').value.trim();
   const desc=$('#f-desc').value.trim();
   if(!unidade){ toast('Escolha a unidade'); $('#f-unidade').focus(); return; }
+  /* v16: nome oficial do cadastro (casa apelido/grafia). Fora do cadastro NÃO bloqueia: local novo
+     e real (ex.: Ginásio Benedito Zarour, que já teve O.S. aprovada) — o fiscal confirma e a gestão
+     inclui no cadastro depois. A v15 da VPS bloqueava; virou confirmação. */
+  let uniOficial=unidadeOficial(unidade);
+  if(!uniOficial){
+    if(!confirm('"'+unidade+'" não está no cadastro de unidades.\n\nConfira a grafia na lista. OK = emitir assim mesmo (local novo — a gestão inclui no cadastro).')){ $('#f-unidade').focus(); return; }
+    uniOficial=unidade;
+  }
+  if(uniOficial!==unidade){ $('#f-unidade').value=uniOficial; }
   if(!areaSel){ toast('Escolha a área'); return; }
   if(!assunto){ toast('Preencha o assunto'); $('#f-assunto').focus(); return; }
   if(!desc){ toast('Descreva o serviço'); $('#f-desc').focus(); return; }
@@ -1256,7 +1289,7 @@ async function emitir(){
     try{
       linhas=await nuvemRest('os_fiscalizacao', {
         method:'POST', headers:{'Prefer':'return=representation'},
-        body:{ data_abertura:hojeISO(), unidade, area:areaSel, nivel:nivelSel,
+        body:{ data_abertura:hojeISO(), unidade:uniOficial, area:areaSel, nivel:nivelSel,
                assunto, descricao:desc, fiscal:$('#f-fiscal').value.trim(),
                emitida_por:(usuarioLogado()||{}).nome||'', obs:$('#f-obs').value.trim(), status:'PEND' }
       });
@@ -1292,7 +1325,7 @@ async function emitir(){
     id: Date.now()+'-'+Math.floor(Math.random()*1e6),
     numero,
     dataAbertura: hojeISO(),
-    unidade, area:areaSel, nivel:nivelSel,
+    unidade:uniOficial, area:areaSel, nivel:nivelSel,
     assunto, descricao:desc,
     prazo:'', prazoHora:'',           // prazo sai em branco na planilha (decisão 01/09)
     fiscal:$('#f-fiscal').value.trim(),
@@ -1514,8 +1547,8 @@ $('#login-esqueci').onclick=()=>{
      oficial;
    - aba velha no navegador: compara com versao.txt do servidor ao abrir e
      toda vez que a aba volta ao primeiro plano; diferente → botão Atualizar. */
-const APP_VER='14';
-const URL_OFICIAL='https://fpvieira-fiscalizacao-educacao-ro-seven.vercel.app';
+const APP_VER='16';
+const URL_OFICIAL='https://fpvieira-fiscalizacao.vercel.app';
 function bannerVersao(html){
   let b=document.getElementById('aviso-versao');
   if(!b){
@@ -1640,7 +1673,9 @@ $('#bt-sync').onclick=()=>nuvemSync(false);
 
 /* ---------- arranque ---------- */
 (function(){
-  const dl=$('#dl-escolas'); ESCOLAS.forEach(e=>{ const o=document.createElement('option'); o.value=e; dl.appendChild(o); });
+  if(Array.isArray(st.cfg.unidades) && st.cfg.unidades.length) UNIDADES=st.cfg.unidades.slice();
+  if(st.cfg.apelidosUni) APELIDOS_UNI=st.cfg.apelidosUni;
+  montaDatalistUni();
   const df=$('#dl-fiscais'); FISCAIS.forEach(f=>{ const o=document.createElement('option'); o.value=f; df.appendChild(o); });
   montaChips('#f-area', AREAS, v=>areaSel=v);
   montaChips('#f-nivel', NIVEIS, v=>nivelSel=v);
